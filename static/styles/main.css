@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans|Merriweather|Merriweather+Sans|Nunito|Nunito+Sans|Quattrocento|Quattrocento+Sans|Roboto|Roboto+Mono|Roboto+Slab");
+
+body {
+  margin-top: 2rem !important;
+  font-family: 'Roboto Slab', sans-serif;
+  color: #302934;
+}
+
+.heading {
+  font-weight: bold;
+  font-size: 2.5em;
+}
+
+main {
+  padding-left: 1rem !important;
+}
+
+section {
+  padding: 1em 0 0 0;
+}
