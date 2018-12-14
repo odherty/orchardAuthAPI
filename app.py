@@ -12,7 +12,7 @@ ma = Marshmallow(app)
 
 class Client(db.Model):
     clientID = db.Column(db.Integer, primary_key=True, unique=True)
-    redirect = db.Column(db.String(150), unique=True)
+    redirect = db.Column(db.String(150))
 
     def __init__(self, clientID, redirect):
         self.clientID = clientID
@@ -31,15 +31,19 @@ clients_schema = ClientSchema(many=True)
 
 @app.route("/login/")
 def index():
-    params = request.args
+
     #add client if not already added
     clientID = db.session.query(Client.clientID).filter_by(clientID=request.args.get("client_id")).scalar()
     if (clientID is None) :
+        params = request.args
         new_client = Client(request.args.get('client_id'), request.args.get('redirect_uri'))
         db.session.add(new_client)
-    #send to index page
-    db.session.commit()
-    return render_template("index.html", params = params)
+        db.session.flush()
+        db.session.commit()
+        return render_template("new_user.html", params = params)
+    else: 
+        # print("Didn't add")
+        return render_template("existing_user.html")
 
 @app.route("/read", methods=["GET"])
 def read():
