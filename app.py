@@ -33,7 +33,8 @@ clients_schema = ClientSchema(many=True)
 def index():
     params = request.args
     #add client if not already added
-    if (db.session.query(Client.clientID).filter_by(clientID=request.args.get("client_id")).scalar() is None) :
+    clientID = db.session.query(Client.clientID).filter_by(clientID=request.args.get("client_id")).scalar())
+    if (clientID is None) :
         new_client = Client(request.args.get('client_id'), request.args.get('redirect_uri'))
         db.session.add(new_client)
         db.session.commit()
