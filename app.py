@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.pool import QueuePool
 from flask_marshmallow import Marshmallow
 import os
 
@@ -34,16 +35,17 @@ def index():
 
     #add client if not already added
     clientID = db.session.query(Client.clientID).filter_by(clientID=request.args.get("client_id")).scalar()
-    # if (clientID is None) :
-    params = request.args
-        # new_client = Client(request.args.get('client_id'), request.args.get('redirect_uri'))
-        # db.session.add(new_client)
-        # db.session.flush()
-        # db.session.commit()
-    return render_template("new_user.html", params = params)
-    # else: 
-    #     # print("Didn't add")
-    #     return render_template("existing_user.html")
+    if (clientID is None) :
+        params = request.args
+        new_client = Client(request.args.get('client_id'), request.args.get('redirect_uri'))
+        db.session.add(new_client)
+        db.session.flush()
+        db.session.commit()
+        return render_template("new_user.html", params = params)
+    else: 
+        # print("Didn't add")
+        return render_template("existing_user.html")
+    db.session.close()
 
 @app.route("/read", methods=["GET"])
 def read():
