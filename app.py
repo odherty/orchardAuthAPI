@@ -18,8 +18,8 @@ def index():
     #add client if not already added
     # clientID = db.session.query(Client.clientID).filter_by(clientID=request.args.get("client_id")).scalar()
     params = request.args
-    clientID = request.args.get('clientID')
-    redirectURI = request.args.get('redirectURI')
+    clientID = request.args.get('client_id')
+    redirectURI = request.args.get('redirect_uri')
 
     if (clientID is None or redirectURI is None) :
         return "Invalid Arguments"
