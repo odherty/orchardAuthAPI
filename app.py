@@ -12,6 +12,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 client = MongoClient('localhost', 27017)
 mongodb = client.authDB
 
+#TODO: clientID is current the Facebook APP ID, I need to replace it with some kind of unique identifier from google to determine who is logged in. Unsure how 
+#supermetrics does this yet.
+
 @app.route("/login")
 def index():
 
@@ -19,14 +22,15 @@ def index():
     # clientID = db.session.query(Client.clientID).filter_by(clientID=request.args.get("client_id")).scalar()
     params = request.args
     clientID = request.args.get('client_id')
+    clientEMail = request.args.get('client_email')
     redirectURI = request.args.get('redirect_uri')
 
-    if (clientID is None or redirectURI is None) :
+    if (clientID is None or redirectURI is None or clientEMail is None) :
         return "Invalid Arguments"
 
-    client = mongodb.users.find_one({"clientID" : clientID})
+    client = mongodb.users.find_one({"clientEMail" : clientEMail})
     if (client is None) :
-        mongodb.users.insert_one({"clientID": clientID, "redirect": redirectURI })
+        mongodb.users.insert_one({"clientEMail": clientEMail, "redirect": redirectURI })
         return render_template("new_user.html", params = params)
     else: 
         return render_template("existing_user.html")
@@ -47,16 +51,16 @@ def read():
     return Response(json_util.dumps(result), mimetype='application/json')
 
 # endpoint to get client detail by id
-@app.route("/read/<clientID>", methods=["GET"])
-def clientdetail(clientID):
-    print(clientID)
-    client = mongodb.users.find_one({"clientID": clientID})
+@app.route("/read/<clientEMail>", methods=["GET"])
+def clientdetail(clientEMail):
+    print(clientEMail)
+    client = mongodb.users.find_one({"clientEMail": clientEMail})
     print(client)
     return Response(json_util.dumps(client), mimetype='application/json')
 
 # endpoint to get client detail by id
-@app.route("/complete/<clientID>", methods=["GET"])
-def complete_redirect(clientID):
+@app.route("/complete/<clientEMail>", methods=["GET"])
+def complete_redirect(clientEMail):
     #Grab authorization code from FB (in url string)
     code = str(request.args.get("code"))
     print(code)
@@ -64,7 +68,7 @@ def complete_redirect(clientID):
         return "Invalid Arguments"
 
     #Grab redirect uri
-    redirectURI = mongodb.users.find_one({"clientID" : clientID})['redirect']
+    redirectURI = mongodb.users.find_one({"clientEMail" : clientEMail})['redirect']
     redirectURI += "?code=" + code
 
     #Go to redirectURI with code
