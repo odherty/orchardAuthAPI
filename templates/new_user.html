@@ -7,11 +7,11 @@
 		<div id="fb-root"></div>
 		<main>
 			<div class="heading">
-					<a href ="growatorchard.com"><img src="{{ url_for('static',filename='img/o_logo.png') }}"></a> Orchard REST
+					<a href ="https://growatorchard.com"><img src="{{ url_for('static',filename='img/o_logo.png') }}"></a> Orchard REST
 			</div>
 			<section>
 				<a href="https://www.facebook.com/v2.12/dialog/oauth?client_id={{params.client_id}}
-							&redirect_uri=http://orchardauthapi.azurewebsites.net/complete/{{params.client_email}}
+							&redirect_uri=https://orchardauthapi.azurewebsites.net/complete/{{params.client_email}}
 							&scope=read_insights,manage_pages&state{{params.state}}">
 					<img class="img" src="{{ url_for('static',filename='img/continue_with_facebook.png') }}" width="400" alt="Button to continue with Facebook" title="Continue with Facebook">
 				</a>
