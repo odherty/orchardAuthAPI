@@ -33,7 +33,7 @@ def index():
         mongodb.users.insert_one({"clientEMail": clientEMail, "redirect": redirectURI })
         return render_template("new_user.html", params = params)
     else: 
-        return render_template("existing_user.html")
+        return render_template("existing_user.html", params= params)
 
 @app.route("/read", methods=["GET"])
 def read():
@@ -52,11 +52,20 @@ def read():
 
 # endpoint to get client detail by id
 @app.route("/read/<clientEMail>", methods=["GET"])
-def clientdetail(clientEMail):
-    print(clientEMail)
+def clientDetail(clientEMail):
     client = mongodb.users.find_one({"clientEMail": clientEMail})
-    print(client)
     return Response(json_util.dumps(client), mimetype='application/json')
+
+@app.route("/delete/<clientEMail>", methods=["GET"])
+def clientDelete(clientEMail):
+    clientID = request.args.get("client_id")
+    clientEMail = request.args.get("client_email")
+    redirectURI = request.args.get("redirect_uri")
+    if (clientID is None or redirectURI is None or clientEMail is None) :
+        return "Invalid Arguments"
+
+    mongodb.users.delete_one({"clientEMail": clientEMail})
+    return redirect("login?client_id=" + clientID + "&client_email=" + clientEMail + "&redirect_uri=" + redirectURI)
 
 # endpoint to get client detail by id
 @app.route("/complete/<clientEMail>", methods=["GET"])
