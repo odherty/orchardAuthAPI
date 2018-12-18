@@ -1,3 +1,6 @@
 env/
 oldCode/
 flask_tutorial/
+test.txt
+.vscode/
+__pycache__/
