@@ -77,7 +77,7 @@ def complete_redirect():
         return "Invalid Arguments"
 
     #Grab redirect uri
-    redirectURI = mongodb.users.find_one({"clientEMail" : clientEMail})['redirect']
+    redirectURI = mongodb.users.find_one({"state" : state})['redirect']
     redirectURI += "?code=" + code
 
     #Go to redirectURI with code
