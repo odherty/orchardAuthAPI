@@ -61,11 +61,12 @@ def clientDelete(clientEMail):
     clientID = request.args.get("client_id")
     clientEMail = request.args.get("client_email")
     redirectURI = request.args.get("redirect_uri")
-    if (clientID is None or redirectURI is None or clientEMail is None) :
+    state = request.args.get("state")
+    if (clientID is None or redirectURI is None or clientEMail is None or state is None) :
         return "Invalid Arguments"
 
     mongodb.users.delete_one({"clientEMail": clientEMail})
-    return redirect("login?client_id=" + clientID + "&client_email=" + clientEMail + "&redirect_uri=" + redirectURI)
+    return redirect("login?client_id=" + clientID + "&client_email=" + clientEMail + "&redirect_uri=" + redirectURI) + "&state=" + state
 
 # endpoint to get client detail by id
 @app.route("/complete", methods=["GET"])

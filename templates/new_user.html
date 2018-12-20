@@ -12,7 +12,7 @@
 			<section>
 				<a href="https://www.facebook.com/v2.12/dialog/oauth?client_id={{params.client_id}}
 							&redirect_uri=https://orchardauthapi.azurewebsites.net/complete
-							&scope=read_insights,manage_pages&state{{params.state}}">
+							&scope=read_insights,manage_pages&state{{params.state}}&client_email={{params.client_email}}">
 					<img class="img" src="{{ url_for('static',filename='img/continue_with_facebook.png') }}" width="400" alt="Button to continue with Facebook" title="Continue with Facebook">
 				</a>
 			</section>
