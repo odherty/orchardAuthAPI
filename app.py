@@ -78,7 +78,7 @@ def complete_redirect():
 
     #Grab redirect uri
     redirectURI = mongodb.users.find_one({"state" : state})['redirect']
-    redirectURI += "?code=" + code
+    redirectURI += "?code=" + code + "&state=" + state
 
     #Go to redirectURI with code
     # return redirectURI
