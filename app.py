@@ -72,8 +72,8 @@ def complete_redirect():
     #Grab authorization code from FB (in url string)
     state = str(request.args.get("state"))
     code = str(request.args.get("code"))
-    print(code)
-    if (code == "None" or clientEMail == "None"):
+    
+    if (code == "None" or state == "None"):
         return "Invalid Arguments"
 
     #Grab redirect uri
