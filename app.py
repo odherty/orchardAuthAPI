@@ -68,12 +68,13 @@ def clientDelete(clientEMail):
     return redirect("login?client_id=" + clientID + "&client_email=" + clientEMail + "&redirect_uri=" + redirectURI)
 
 # endpoint to get client detail by id
-@app.route("/complete/<clientEMail>", methods=["GET"])
-def complete_redirect(clientEMail):
+@app.route("/complete", methods=["GET"])
+def complete_redirect():
     #Grab authorization code from FB (in url string)
+    clientEMail = request.args.get("client_email"))
     code = str(request.args.get("code"))
     print(code)
-    if (code == "None"):
+    if (code == "None" or clientEMail is None):
         return "Invalid Arguments"
 
     #Grab redirect uri
@@ -81,8 +82,8 @@ def complete_redirect(clientEMail):
     redirectURI += "?code=" + code
 
     #Go to redirectURI with code
-    return redirectURI
-    # return redirect(redirectURI)
+    # return redirectURI
+    return redirect(redirectURI)
 
 if __name__ == '__main__':
     app.run(debug=True)
