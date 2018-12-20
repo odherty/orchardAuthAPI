@@ -71,7 +71,7 @@ def clientDelete(clientEMail):
 @app.route("/complete", methods=["GET"])
 def complete_redirect():
     #Grab authorization code from FB (in url string)
-    clientEMail = request.args.get("client_email"))
+    clientEMail = request.args.get("client_email")
     code = str(request.args.get("code"))
     print(code)
     if (code == "None" or clientEMail is None):
